@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "admin12345"
+    ports:
+      - 5432:5432
+    networks:
+      - bridge
+
+  nats:
+    image: nats-streaming:latest
+    environment:
+      NATS_STREAMING_ID: "streaming-server"
+      NATS_CLUSTER_ID: "test-cluster"
+    ports:
+      - 4222:4222
+      - 8222:8222
+    networks:
+      - bridge
+    depends_on:
+      - postgres
+
+  main:
+    working_dir: /app
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - bridge
+    depends_on:
+      - nats
+      - postgres
+
+networks:
+    bridge:
+      driver: bridge

@@ -10,7 +10,7 @@ type DataBase struct {
 	db *sql.DB
 }
 
-var connStr = "user=postgres password=admin12345 dbname=wb sslmode=disable"
+var connStr = "host=postgres port=5432 user=postgres password=admin12345 dbname=wb sslmode=disable"
 
 func DbStruct() *DataBase {
 

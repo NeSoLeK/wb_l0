@@ -14,6 +14,6 @@ func main() {
 	nats := service.NatsCreateConnection(sql, cache)
 	nats.Subscribe()
 	sql.DbCreate()
-	router := handlers.CreateRouter()
-	router.StartHandlers(cache)
+	router := handlers.CreateRouter(sql, cache)
+	router.StartHandlers()
 }

@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	sc, err := stan.Connect("test-cluster", "client-test", stan.NatsURL("nats://localhost:4222"))
+	sc, err := stan.Connect("test-cluster", "client-test", stan.NatsURL("nats://127.0.0.1:4222"))
 	if err != nil {
 		log.Fatal(err)
 	}

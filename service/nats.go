@@ -15,7 +15,7 @@ type NatsStream struct {
 }
 
 func NatsCreateConnection(database *db.DataBase, cachemap *CacheMap) *NatsStream {
-	sc, err := stan.Connect("test-cluster", "hochyvwildberries", stan.NatsURL("nats://127.0.0.1:4222"))
+	sc, err := stan.Connect("test-cluster", "hochyvwildberries", stan.NatsURL("nats://nats:4222"))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -14,12 +14,12 @@ type Router struct {
 	cache *service.CacheMap
 }
 
-func CreateRouter() *Router {
+func CreateRouter(base *db.DataBase, cache *service.CacheMap) *Router {
 	router := gin.Default()
-	return &Router{app: router}
+	return &Router{app: router, db: base, cache: cache}
 }
 
-func (r *Router) StartHandlers(m *service.CacheMap) {
+func (r *Router) StartHandlers() {
 
 	r.app.LoadHTMLGlob("web/*")
 
@@ -32,16 +32,16 @@ func (r *Router) StartHandlers(m *service.CacheMap) {
 
 	r.app.GET("/order", func(c *gin.Context) {
 		id := c.Query("id")
-		data := m.GetOrderByUID(id)
-
-		c.JSON(http.StatusOK, string(data))
+		data := r.cache.GetOrderByUID(id)
 		if data == nil {
 			c.Status(http.StatusNoContent)
+			return
 		}
+		c.JSON(http.StatusOK, string(data))
 
 	})
 
-	err := r.app.Run("127.0.0.1:8080")
+	err := r.app.Run("main:8080")
 	if err != nil {
 		log.Fatal(err)
 	}

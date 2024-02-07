@@ -10,10 +10,32 @@
 
 <body>
 <h1>Поиск Заказа</h1>
-<form method="GET" action="/order">
-    <input type="text" name="id" placeholder="Введите ID заказа">
+<form id="form">
+    <input type="text" id="inputId" placeholder="Введите ID заказа">
     <button type="submit">Поиск</button>
 </form>
 <p>Введите ID для поиска заказа.</p>
+<div id="json_block"></div>
+<script>
+    const formElem = document.querySelector("#form");
+    const inputElem = document.querySelector("#inputId");
+    const json_block = document.querySelector("#json_block")
+
+    async function getData(url = `/order?id=${inputElem.value}`) {
+        const response = await fetch(url, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => json_block.innerHTML = data);
+    }
+
+    formElem.addEventListener("submit", (e)=> {
+        e.preventDefault();
+        getData()
+
+    })
+
+
+</script>
 </body>
 </html>

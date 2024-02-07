@@ -10,7 +10,7 @@ type DataBase struct {
 	db *sql.DB
 }
 
-var connStr = "user=postgres password=gHsdasx12Adx dbname=wb sslmode=disable"
+var connStr = "user=postgres password=admin12345 dbname=wb sslmode=disable"
 
 func DbStruct() *DataBase {
 
@@ -46,4 +46,13 @@ func (s *DataBase) DbGetAll() *sql.Rows {
 
 	return rows
 
+}
+
+func (s *DataBase) GetOrderByUID(orderUID string) (*sql.Rows, error) {
+	rows, err := s.db.Query("SELECT * FROM Orders WHERE data ->>'order_uid' = $1", orderUID)
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, nil
 }
